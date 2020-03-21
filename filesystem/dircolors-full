@@ -1,0 +1,284 @@
+# Configuration file for the 256color ls utility
+# This file goes in the /etc directory, and must be world readable.
+# Synchronized with coreutils 8.5 dircolors
+# You can copy this file to .dir_colors in your $HOME directory to override
+# the system defaults.
+# In the case that you are not satisfied with supplied colors, please
+# submit your color configuration or attach your file with colors readable
+# on ALL color background schemas (white,gray,black) to RedHat Bugzilla
+# ticket on https://bugzilla.redhat.com/show_bug.cgi?id=429121 . TIA.
+# Please just keep ls color conventions from 8 color scheme.
+
+# COLOR needs one of these arguments: 'tty' colorizes output to ttys, but not
+# pipes. 'all' adds color characters to all output. 'none' shuts colorization
+# off.
+COLOR tty
+
+# Extra command line options for ls go here.
+# Basically these ones are:
+#  -F = show '/' for dirs, '*' for executables, etc.
+#  -T 0 = don't trust tab spacing when formatting ls output.
+OPTIONS -F -T 0
+
+# EIGHTBIT, followed by '1' for on, '0' for off. (8-bit output)
+EIGHTBIT 1
+
+# Below are the color init strings for the basic file types. A color init
+# string consists of one or more of the following numeric codes:
+# Attribute codes:
+# 00=none 01=bold 04=underscore 05=blink 07=reverse 08=concealed
+# Text color(8 colors mode) codes:
+# 30=black 31=red 32=green 33=yellow 34=blue 35=magenta 36=cyan 37=white
+# Background color(8 colors mode) codes:
+# 40=black 41=red 42=green 43=yellow 44=blue 45=magenta 46=cyan 47=white
+# Text color(256 colors mode) codes:
+# Valid syntax for text 256color is 38;5;<color number> , where color number
+# is number between 0 and 255.
+# You may find following command useful to search the best one for you:
+# for ((x=0; x<=255; x++));do echo -e "${x}:\033[38;5;${x}mcolor\033[000m";done
+# Background color(256 colors mode) codes:
+# Valid syntax for background 256color is 48;5;<color number> , where
+# color number is number between 0 and 255.
+# You may find following command useful to search the best one for you:
+# for ((x=0; x<=255; x++));do echo -e "${x}:\033[48;5;${x}mcolor\033[000m";done
+
+#NORMAL 00	        # global default, no color code at all
+#FILE 00            # normal file, use no color at all
+RESET 0             # reset to "normal" color
+DIR 38;2;0;120;255	# directory
+LINK 38;2;0;255;210	# symbolic link (If you set this to 'target' instead of a
+                    # numerical value, the color is as for the file pointed to.)
+MULTIHARDLINK 38;2;255;159 # regular file with more than one link
+FIFO 48;2;0;0;0;38;2;0;234;255	# pipe
+SOCK 38;2;148;90;255	# socket
+DOOR 38;2;119;39;198	# door
+BLK 48;2;8;8;8;38;2;255,255,0	# block device driver
+CHR 48;2;8;8;8;38;2;128;128	# character device driver
+ORPHAN  05;48;2;8;8;8;38;2;236;27;27  # symlink to nonexistent file, or non-stat'able file
+MISSING 05;48;2;8;8;8;38;2;255;255;255 # ... and the files they point to
+SETUID 48;2;255;0;0;38;2;248;248;248	# file that is setuid (u+s)
+SETGID 48;2;;252;252;252;38;2;0;0;0	# file that is setgid (g+s)
+CAPABILITY 48;2;255;0;0;38;2;255;252;0	# file with capability
+STICKY_OTHER_WRITABLE 48;2;0;252;0;38;2;2;2;2 # dir that is sticky and other-writable (+t,o+w)
+OTHER_WRITABLE 48;2;0;252;0;38;2;0;0;252 # dir that is other-writable (o+w) and not sticky
+STICKY 48;2;0;0;255;38;2;252;252;252	# dir with the sticky bit set (+t) and not other-writable
+
+# This is for files with execute permission:
+EXEC 38;2;0;255;0
+
+# List any file extensions like '.gz' or '.tar' that you would like ls
+# to colorize below. Put the extension, a space, and the color init string.
+# (and any comments you want to add after a '#')
+# executables (bright green)
+.cmd 38;2;167;243;65
+.exe 38;2;167;243;65
+.com 38;2;167;243;65
+.btm 38;2;167;243;65
+.bat 38;2;167;243;65
+.sh  38;2;167;243;65
+.csh 38;2;167;243;65
+.ps1 38;2;167;243;65
+.elf 38;2;167;243;65
+.app 38;2;167;243;65
+
+ # archives or compressed (bright red)
+.a 38;2;236;113;27
+.ar 38;2;236;113;27
+.cpio 38;2;236;113;27
+.shar 38;2;236;113;27
+.LBR 38;2;236;113;27
+.iso 38;2;236;113;27
+.lbr 38;2;236;113;27
+.mar 38;2;236;113;27
+.sbx 38;2;236;113;27
+.tar 38;2;236;113;27
+.bz2 38;2;236;113;27
+.F 38;2;236;113;27
+.gz 38;2;236;113;27
+.lz 38;2;236;113;27
+.lz4 38;2;236;113;27
+.lzma 38;2;236;113;27
+.lzo 38;2;236;113;27
+.sfark 38;2;236;113;27
+.sz 38;2;236;113;27
+.xz 38;2;236;113;27
+.Z 38;2;236;113;27
+.z 38;2;236;113;27
+.zst 38;2;236;113;27
+.7z 38;2;236;113;27
+.s7z 38;2;236;113;27
+.ace 38;2;236;113;27
+.afa 38;2;236;113;27
+.alz 38;2;236;113;27
+.apk 38;2;236;113;27
+.arc 38;2;236;113;27
+.ark 38;2;236;113;27
+.cdx 38;2;236;113;27
+.arj 38;2;236;113;27
+.b1 38;2;236;113;27
+.b6z 38;2;236;113;27
+.ba 38;2;236;113;27
+.bh 38;2;236;113;27
+.cab 38;2;236;113;27
+.car 38;2;236;113;27
+.cfs 38;2;236;113;27
+.cpt 38;2;236;113;27
+.dar 38;2;236;113;27
+.dd 38;2;236;113;27
+.dgc 38;2;236;113;27
+.dmg 38;2;236;113;27
+.ear 38;2;236;113;27
+.gca 38;2;236;113;27
+.ha 38;2;236;113;27
+.hki 38;2;236;113;27
+.ice 38;2;236;113;27
+.jar 38;2;236;113;27
+.kgb 38;2;236;113;27
+.lha 38;2;236;113;27
+.lzh 38;2;236;113;27
+.lzx 38;2;236;113;27
+.pak 38;2;236;113;27
+.partimg 38;2;236;113;27
+.paq6 38;2;236;113;27
+.paq7 38;2;236;113;27
+.paq8 38;2;236;113;27
+.pea 38;2;236;113;27
+.pim 38;2;236;113;27
+.pit 38;2;236;113;27
+.qda 38;2;236;113;27
+.rar 38;2;236;113;27
+.rk 38;2;236;113;27
+.sda 38;2;236;113;27
+.sea 38;2;236;113;27
+.sen 38;2;236;113;27
+.sfx 38;2;236;113;27
+.shk 38;2;236;113;27
+.sit 38;2;236;113;27
+.sitx 38;2;236;113;27
+.sqx 38;2;236;113;27
+.tgz 38;2;236;113;27
+.tbz2 38;2;236;113;27
+.tlz 38;2;236;113;27
+.txz 38;2;236;113;27
+.uc 38;2;236;113;27
+.uc0 38;2;236;113;27
+.uc2 38;2;236;113;27
+.ucn 38;2;236;113;27
+.ur2 38;2;236;113;27
+.ue2 38;2;236;113;27
+.uca 38;2;236;113;27
+.uha 38;2;236;113;27
+.war 38;2;236;113;27
+.wim 38;2;236;113;27
+.xar 38;2;236;113;27
+.xp3 38;2;236;113;27
+.yz1 38;2;236;113;27
+.zip 38;2;236;113;27
+.zipx 38;2;236;113;27
+.zoo 38;2;236;113;27
+.zpaq 38;2;236;113;27
+.zz 38;2;236;113;27
+.ecc 38;2;236;113;27
+.ecsbx 38;2;236;113;27
+.par 38;2;236;113;27
+.par2 38;2;236;113;27
+.rev 38;2;236;113;27
+.run 38;2;236;113;27
+.img 38;2;236;113;27
+.ima 38;2;236;113;27
+.mou 38;2;236;113;27
+.swm 38;2;236;113;27
+.esd 38;2;236;113;27
+.deb 38;2;236;113;27
+.pkg 38;2;236;113;27
+.mpkg 38;2;236;113;27
+.rpm 38;2;236;113;27
+.msi 38;2;236;113;27
+.jar 38;2;236;113;27
+.crx 38;2;236;113;27
+
+# image formats (magenta)
+.jpg 38;2;211;0;255
+.jpeg 38;2;211;0;255
+.gif 38;2;211;0;255
+.bmp 38;2;211;0;255
+.pbm 38;2;211;0;255
+.pgm 38;2;211;0;255
+.ppm 38;2;211;0;255
+.tga 38;2;211;0;255
+.xbm 38;2;211;0;255
+.xpm 38;2;211;0;255
+.tif 38;2;211;0;255
+.tiff 38;2;211;0;255
+.png 38;2;211;0;255
+.svg 38;2;211;0;255
+.svgz 38;2;211;0;255
+.mng 38;2;211;0;255
+.pcx 38;2;211;0;255
+.xcf 38;2;211;0;255
+.psp 38;2;211;0;255
+.psd 38;2;211;0;255
+
+#video formats
+.mov 38;2;175;0;175
+.mpg 38;2;175;0;175
+.mpeg 38;2;175;0;175
+.m2v 38;2;175;0;175
+.mkv 38;2;175;0;175
+.ogm 38;2;175;0;175
+.mp4 38;2;175;0;175
+.m4v 38;2;175;0;175
+.mp4v 38;2;175;0;175
+.vob 38;2;175;0;175
+.qt  38;2;175;0;175
+.nuv 38;2;175;0;175
+.wmv 38;2;175;0;175
+.asf 38;2;175;0;175
+.rm  38;2;175;0;175
+.rmvb 38;2;175;0;175
+.flc 38;2;175;0;175
+.avi 38;2;175;0;175
+.fli 38;2;175;0;175
+.flv 38;2;175;0;175
+.gl 38;2;175;0;175
+.dl 38;2;175;0;175
+.xwd 38;2;175;0;175
+.yuv 38;2;175;0;175
+.cgm 38;2;175;0;175
+.emf 38;2;175;0;175
+
+# http://wiki.xiph.org/index.php/MIME_Types_and_File_Extensions
+.axv 38;2;175;0;175
+.anx 38;2;175;0;175
+.ogv 38;2;175;0;175
+.ogx 38;2;175;0;175
+
+# audio formats (cyan)
+.aac 38;2;0;215;255
+.au 38;2;0;215;255
+.flac 38;2;0;215;255
+.mid 38;2;0;215;255
+.midi 38;2;0;215;255
+.mka 38;2;0;215;255
+.mp3 38;2;0;215;255
+.mpc 38;2;0;215;255
+.ogg 38;2;0;215;255
+.ra 38;2;0;215;255
+.wav 38;2;0;215;255
+
+# http://wiki.xiph.org/index.php/MIME_Types_and_File_Extensions
+.axa 38;2;0;215;255
+.oga 38;2;0;215;255
+.spx 38;2;0;215;255
+.xspf 38;2;0;215;255
+
+config files
+.conf 00;38;2;135;215;0
+.cnf 00;38;2;135;215;0
+.cfg 00;38;2;135;215;0
+.ini 00;38;2;135;215;0
+
+#patches
+.dif 00;38;2;135;175;0
+.diff 00;38;2;135;175;0
+.patch 00;38;2;135;175;0
