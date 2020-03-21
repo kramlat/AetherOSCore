@@ -3,4 +3,8 @@
 Welcome to the package source repository for AetherOS.
 here is everything needed to build any piece of the distro yourself.
 currently hosted packages
-* Filesystem *(beta)*
+|-------------------|------------------|
+|Name|Version|
+|-------------------|------------------|
+|Filesystem *(beta)*|2020.2.99-20200321|
+|-------------------|------------------|
