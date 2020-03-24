@@ -1,0 +1,135 @@
+pkgname=filesystem
+pkgver=2020.2.99
+pkgrel=20200322
+pkgdesc='Base AetherOS files (beta)'
+arch=('x86_64')
+license=('GPL')
+#url='https://www.archlinux.org'
+depends=('iana-etc')
+backup=('etc/crypttab'
+        'etc/fstab'
+        'etc/group'
+        'etc/gshadow'
+        'etc/host.conf'
+        'etc/hosts'
+        'etc/issue'
+        'etc/ld.so.conf'
+        'etc/motd'
+        'etc/nsswitch.conf'
+        'etc/passwd'
+        'etc/profile'
+        'etc/resolv.conf'
+        'etc/securetty'
+        'etc/shadow'
+        'etc/shells')
+
+source=('crypttab' 'dircolors' 'dircolors-256' 'dircolors-full'
+        'env-generator' 'fstab' 'group' 'gshadow'
+        'host.conf' 'hosts' 'issue' 'ld.so.conf'
+        '_extrapaths.sh' 'locale.sh' 'dircolors.sh' 'readline.sh'
+        'umask.sh' 'motd' 'nsswitch.conf' 'os-release'
+        'passwd' 'profile' 'resolv.conf' 'securetty'
+        'shadow' 'shells' 'sysctl' 'sysusers'
+        'tmpfiles' 'aetheros.svg' 'aetheros.png')
+
+md5sums=(
+"5fa6674df7645d7f5895f2d12b4ef4e9" "06dfe165727d5df7aae99ba10334b48a" "f6f9940eeb48415948f4becce9e51fe1" "ad0e9b46bfb9c2dd74c0b8b0849b1db6"
+"2b0344e9639f35f3c0d5637a23556089" "e33f6dfdd61978fcb3ddf1431286e05a" "7fed1e1fb855e41a6d64d41f8521d69a" "1c1e3b08acfa286f4b417c49de3e4366"
+"7d119a9cce152aa182fb3392ddeecea7" "a1315ea3e2b64d197b6efaf9c14ff778" "7af7d750adb6a4a9e0895f09fe2a449f" "5deb9f890a4d08a245e9752ede77271e"
+"f99c63855079a89e632e079e8ee14953" "580cf8b59eebfaac4fad373ffadc9912" "b382b1c563d17f34716a5c689b44d230" "fa6ce99e0329c7854e0a83d022da6fe3"
+"f1dd87922e8fddfe73ef20ae76c2f777" "bc08cc7224cdc32cc0a4da9714d26422" "981ee4d7e506a9d6d9ed2d872e16004b" "d263bb02172b5a2cc626d68867f87795"
+"5182ac38a0de85da8ade93ef71975ca4" "02d7838aa6daa56f899c93a9142a656a" "0ee015fad07732676d9488ae498eed41" "f04bcb2803afc4dcb95670fe87343b4d"
+"f64466dd77c7bec37a8b47681468211a" "a78cd8d7f8240a8448edee82f503c34e" "a51847c012555c843dbdf8df0da171d3" "af7832eabaac9804c22f1f2b53816a49"
+"0267a3a463f35eec8a31f40a720dfd86" "47d6666612f2e952616934510365f1d3" "0d6cb768d994667fb474709e9598e833"
+)
+
+package() {
+  cd "$pkgdir"
+
+  # setup root filesystem
+  for d in boot dev etc home mnt usr var opt srv/http run; do
+    install -d -m755 $d
+  done
+  install -d -m555 proc
+  install -d -m555 sys
+  install -d -m0750 root
+  install -d -m1777 tmp
+  # vsftpd won't run with write perms on /srv/ftp
+  # ftp (uid 14/gid 11)
+  install -d -m555 -g 11 srv/ftp
+
+  # setup /etc and /usr/share/factory/etc
+  install -d etc/{ld.so.conf.d,skel,profile.d} usr/share/factory/etc
+  for f in dircolors dircolors-256 dircolors-full fstab group host.conf hosts issue ld.so.conf motd nsswitch.conf \
+  passwd resolv.conf securetty shells profile; do
+    install -m644 "$srcdir"/$f etc/
+    install -m644 "$srcdir"/$f usr/share/factory/etc/
+  done
+  ln -s ../proc/self/mounts etc/mtab
+  for f in gshadow shadow crypttab; do
+    install -m600 "$srcdir"/$f etc/
+    install -m600 "$srcdir"/$f usr/share/factory/etc/
+  done
+  touch etc/aether-release
+  install -m644 "$srcdir"/_extrapaths.sh etc/profile.d/_extrapaths.sh
+  install -m644 "$srcdir"/dircolors.sh etc/profile.d/dircolors.sh
+  install -m644 "$srcdir"/locale.sh etc/profile.d/locale.sh
+  install -m644 "$srcdir"/readline.sh etc/profile.d/readline.sh
+  install -m644 "$srcdir"/umask.sh etc/profile.d/umask.sh
+  install -Dm644 "$srcdir"/os-release usr/lib/os-release
+
+  # setup /var
+  for d in cache local opt log/old lib/misc empty; do
+    install -d -m755 var/$d
+  done
+  install -d -m1777 var/{tmp,spool/mail}
+
+  # allow setgid games (gid 50) to write scores
+  install -d -m775 -g 50 var/games
+  ln -s spool/mail var/mail
+  ln -s ../run var/run
+  ln -s ../run/lock var/lock
+
+  # setup /usr hierarchy
+  for d in bin include lib share/{misc,pixmaps} src; do
+    install -d -m755 usr/$d
+  done
+  for d in {1..8}; do
+    install -d -m755 usr/share/man/man$d
+  done
+
+  # add lib symlinks
+  ln -s usr/lib lib
+  [[ $CARCH = 'x86_64' ]] && {
+    ln -s usr/lib lib64
+    ln -s lib usr/lib64
+  }
+
+  # add bin symlinks
+  ln -s usr/bin bin
+  ln -s usr/bin sbin
+  ln -s bin usr/sbin
+
+  # setup /usr/local hierarchy
+  for d in bin etc games include lib man sbin share src; do
+    install -d -m755 usr/local/$d
+  done
+  ln -s ../man usr/local/share/man
+
+  # setup systemd-sysctl
+  install -D -m644 "$srcdir"/sysctl usr/lib/sysctl.d/10-aether.conf
+
+  # setup systemd-sysusers
+  install -D -m644 "$srcdir"/sysusers usr/lib/sysusers.d/aether.conf
+
+  # setup systemd-tmpfiles
+  install -D -m644 "$srcdir"/tmpfiles usr/lib/tmpfiles.d/aether.conf
+
+  # setup systemd.environment-generator
+  install -D -m755 "$srcdir"/env-generator usr/lib/systemd/system-environment-generators/10-aether
+
+  # add logo
+  install -D -m644 "$srcdir"/aetheros.{svg,png} usr/share/pixmaps
+}
+
+# vim:set ts=2 sw=2 et:

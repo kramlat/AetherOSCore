@@ -1,0 +1,31 @@
+# Maintainer: Thomas Bächler <thomas@archlinux.org>
+
+pkgname=acl
+pkgver=2.2.53
+pkgrel=20200323
+pkgdesc='Access control list utilities, libraries and headers'
+arch=('x86_64')
+url='https://savannah.nongnu.org/projects/acl'
+license=('LGPL')
+depends=('attr')
+replaces=('xfsacl')
+provides=('xfsacl')
+conflicts=('xfsacl')
+source=("https://download.savannah.gnu.org/releases/$pkgname/$pkgname-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cd $pkgname-$pkgver
+
+  ./configure \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
+    --prefix=/usr
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+
+  make DESTDIR="${pkgdir}" install
+}
